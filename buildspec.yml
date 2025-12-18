@@ -4,20 +4,19 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
-      - echo "Upgrading build tools..."
-      - pip install --upgrade pip setuptools wheel
-
-      - echo "Installing dependencies (binary only)..."
-      - pip install --only-binary=:all: -r requirements.txt -t .
-      
+      - echo "Installing dependencies..."
+      - pip install -r requirements.txt -t python
   build:
     commands:
       - echo "Zipping deployment package..."
-      - zip -r deployment_package.zip .
+      - cd python
+      - zip -r9 ../deployment_package.zip .
+      - cd ..
+      - zip -g deployment_package.zip lambda_function.py
   post_build:
     commands:
       - echo "Uploading to S3..."
-      - aws s3 cp deployment_package.zip s3://lambda-builds-zip-files/deployment_package.zip
+      - aws s3 cp deployment_package.zip s3://lambda-builds-zip-files/
       - echo "Updating Lambda function via S3..."
       - aws lambda update-function-code --function-name github-to-lambda-cicd --s3-bucket lambda-builds-zip-files --s3-key deployment_package.zip
       - echo "Deployment complete!"
