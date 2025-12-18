@@ -4,15 +4,14 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
-      - echo "Installing dependencies..."
-      - pip install -r requirements.txt -t python
+      - echo "Upgrading build tools..."
+      - pip install --upgrade pip setuptools wheel
+      - echo "Installing dependencies into root..."
+      - pip install -r requirements.txt -t .
   build:
     commands:
       - echo "Zipping deployment package..."
-      - cd python
-      - zip -r9 ../deployment_package.zip .
-      - cd ..
-      - zip -g deployment_package.zip lambda_function.py
+      - zip -r deployment_package.zip .
   post_build:
     commands:
       - echo "Uploading to S3..."
