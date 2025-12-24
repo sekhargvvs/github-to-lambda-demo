@@ -4,8 +4,6 @@ phases:
     runtime-versions:
       python: 3.11
     commands:
-      - echo "Upgrading build tools..."
-      - pip install --upgrade pip setuptools wheel
       - echo "Installing dependencies into root..."
       - pip install -r requirements.txt -t lib
   build:
