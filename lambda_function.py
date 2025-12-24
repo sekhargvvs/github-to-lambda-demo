@@ -2,7 +2,7 @@ import json
 import requests
 import pandas as pd
 #To test the code
-def custom_lambda(event, context):
+def lambda_handler(event, context):
     print("Event Data ->", event)
     response = requests.get("https://www.google.com")
     print(response.text)
